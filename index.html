@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>autoEdit - os x</title>
+    <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/custom.css">
+   <link rel="stylesheet" href="css/tab.css">
+  <script src="./js/jquery-1.11.3.min.js"></script>
+  <script  src="js/bootstrap.js"></script>
+  <!-- OR NONE IF YOU ARE USING PURE JAVASCRIPT -->
+<script>
+
+// var win = nw.window.get();
+</script>
+  </head>
+  <body>
+<!-- Navbar partial -->
+<div id="navbar">
+</div>
+<!-- New transcript Modal -->
+<div id="newTranscript">
+</div>
+<!-- New PaperEdit Modal -->
+<div id="newPaperEdit">
+</div>
+<input style="display:none;" id="videoFileDialog" type="file" />
+
+<div id="mainContainer" class="container">
+
+ </div> <!-- container -->
+
+<script>
+var fs = require('fs');
+var db = require('diskdb');
+var ffmpeg = require('fluent-ffmpeg');
+
+/**
+* Adding navbar partial
+*/
+var navbar = document.getElementById('navbar');
+var navbarFile = fs.readFileSync("./views/partials/_navbar.html");
+navbar.innerHTML = navbarFile.toString();
+
+//end of adding navbar partial
+
+/**
+* Adding new transcritp modal
+*/
+var newTranscript = document.getElementById('newTranscript');
+var newTranscriptFile = fs.readFileSync("./views/partials/_new_transcript.html");
+newTranscript.innerHTML = newTranscriptFile.toString();
+//end of adding new transcritp modal
+
+/**
+* Adding new PaperEdit modal
+*/
+var newPaperEdit = document.getElementById('newPaperEdit');
+var newPaperEditFile = fs.readFileSync("./views/partials/_new_paperedit.html");
+newPaperEdit.innerHTML = newPaperEditFile.toString();
+//end of adding new transcritp modal
+
+
+
+
+function chooseFile(name) {
+    var chooser = document.querySelector(name);
+
+    chooser.addEventListener("change", function(evt) {
+      // console.log(this.value);
+  // var filename = evt.target.value;
+      openVideoFile(this.value);
+    }, false);
+
+    chooser.click();  
+}
+  // chooseFile('#fileDialog');
+
+var video ={};
+function openVideoFile(file){
+  // alert( file);
+  video ={};
+  fileNameAr = file.split("/");
+  video.fileName= fileNameAr[fileNameAr.length-1]
+  $('#newTranscriptModal').modal('toggle')
+  document.getElementById('inputVideoFileName').value = file;
+
+ 
+ ffmpeg.ffprobe(file, function(err, metadata) {
+    console.log(JSON.stringify(metadata, null, 4));
+
+      // DATE
+      if(metadata.streams[0]!= undefined && metadata.streams[0].tags != undefined &&  metadata.streams[0].tags.creation_time != undefined){
+          document.getElementById('inputVideoDate').value = metadata.streams[0].tags.creation_time;
+          video.date = metadata.streams[0].tags.creation_time;
+      }else{
+        document.getElementById('inputVideoDate').value = "Time.now";
+          video.date ="not available";//"Time.now";
+
+      }
+
+     //REEL
+     if(metadata.streams[2]!= undefined && metadata.streams[2].tags != undefined &&  metadata.streams[2].tags.reel_name != undefined){
+       document.getElementById('inputVideoReelName').value = metadata.streams[2].tags.reel_name;
+       video.reel_name = metadata.streams[2].tags.reel_name;
+     }else {
+       document.getElementById('inputVideoReelName').value = "not available";
+        video.reel_name = "not available";
+        //+write it to video
+     }
+    
+    //TIMECODE
+    if(metadata.streams[0]!= undefined && metadata.streams[0].tags != undefined &&  metadata.streams[0].tags.timecode != undefined){
+
+     document.getElementById('inputVideoTimecode').value = metadata.streams[0].tags.timecode;
+     video.timecode =  metadata.streams[0].tags.timecode;
+   }else{
+     document.getElementById('inputVideoTimecode').value = "00:00:00:00";
+       video.timecode =  "not available";//"00:00:00:00";
+       //+write it to video
+       //enable field 
+   }
+
+   // fps
+    if(metadata.streams[0]!= undefined && metadata.streams[0].codec_time_base != undefined ){
+      document.getElementById('inputVideoTimebase').value = metadata.streams[0].codec_time_base;
+      video.timecode =  metadata.streams[0].codec_time_base;
+    }else{
+      document.getElementById('inputVideoTimebase').value ="1/25";
+    video.timecode =  "not available";//"1/25";
+    //enable field 
+    }
+
+     if(metadata.streams[0]!= undefined && metadata.streams[0].duration != undefined ){
+          document.getElementById('inputVideoDuration').value = metadata.streams[0].duration;
+          video.duration = metadata.streams[0].duration;
+      }else{
+        document.getElementById('inputVideoDuration').value = "NA";
+        video.duration = "NA";
+          //enable field 
+      }
+
+      console.log(JSON.stringify(video));
+  });
+  
+
+  // gui.Shell.openItem(srtFile);
+  // gui.Shell.showItemInFolder(srtFile);
+  //gui.Shell.openExternal('https://github.com/rogerwang/node-webkit');
+}//openVideoFile
+
+
+function saveVideo(){
+    /**
+  * gets voice from dropdown
+  */
+
+    var e = document.getElementById('selectPaperEdit')
+    video.paperedit = e.options[e.selectedIndex].value;
+
+  var description = document.getElementById('textAreaVideoDescription').value
+  video.description =  description;
+
+var srtFile=  document.getElementById('srtFile').value
+video.srtFile = srtFile;
+
+  alert(JSON.stringify(video));
+var transcriptWindow = window.open('transcript.html');
+//in global var to pass to next window
+global.video = video;
+db.connect('db', ['videos']);
+db.videos.save(video);
+//here is where you should save to db 
+}
+
+
+    </script>
+      <script src="./js/main.js"></script>
+    </body>
+</html>

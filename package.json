@@ -1,0 +1,36 @@
+{
+  "name": "autoedit",
+  "version": "1.0.0",
+  "description": "autoEdit node desktop app os x",
+  "main": "index.html",
+  "window": {
+    "width": 1000,
+    "height": 800,
+    "position": "mouse",
+    "min_width": 600,
+    "min_height": 400,
+    "max_width": 8000,
+    "max_height": 8000,
+    "toolbar": true,
+    "icon": "logo.png",
+    "resizable": true,
+    "fullscreen": false
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Pietro Passarelli",
+  "license": "ISC",
+  "maintainers": [
+    {
+      "name": "Pietro Passarelli",
+      "email": "pietro.passarelli@gmail.com",
+      "web": "http://www.pietropassarelli.com"
+    }
+  ],
+  "bugs": "mailito: pietro.passarelli@gmail..com",
+  "dependencies": {
+    "diskdb": "^0.1.14",
+    "fluent-ffmpeg": "^2.0.1"
+  }
+}

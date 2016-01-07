@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>autoEdit - os x</title>
+    <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="css/bootstrap.css">
+  <link rel="stylesheet" href="css/custom.css">
+   <link rel="stylesheet" href="css/tab.css">
+  <script src="./js/jquery-1.11.3.min.js"></script>
+  <script  src="js/bootstrap.js"></script>
+
+
+ 
+  <!-- OR NONE IF YOU ARE USING PURE JAVASCRIPT -->
+<script>
+
+// var win = nw.window.get();
+</script>
+  </head>
+  <body>
+<!-- Navbar -->
+  <!--  Cosmo Nav bar -->
+<div class="navbar navbar-default">
+    <div class="navbar-header">
+       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-responsive-collapse">
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <a class="navbar-brand" href="./index.html">autoEdit</a>
+    </div>
+    <div class="navbar-collapse collapse navbar-responsive-collapse">
+      <ul class="nav navbar-nav">
+
+      <li><a href="#" ><span class='glyphicon glyphicon-align-justify' aria-hidden='true'> Transcripts</span></a></li>
+
+      <li><a href="#"><span class='glyphicon glyphicon-film' aria-hidden='true'> Paper Edits</span></a></li>
+
+      <li><a href="#" onclick="chooseFile('#videoFileDialog')"><span class='glyphicon glyphicon-circle-arrow-up' aria-hidden='true'> New Transcript</span></a></li>
+
+      <li><a href="#"><span class='glyphicon glyphicon-plus' aria-hidden='true'> New Paper Edit</span></a> </li>
+      
+      </ul>
+         <ul class="nav navbar-nav navbar-right">
+          <li>
+            <a href="mailto:info@autoedit.io?subject=autoEdit%20Enquiry
+&body=Hello,%0D%0A I have a quesiton about autoEdit.."><span class='glyphicon glyphicon-send' aria-hidden='true'> Support</span></a> </li>
+
+      </ul>
+</div><!-- /.nav-collapse -->
+</div>
+<!-- end navbar -->
+
+    <div id="mainContainer" class="container">
+<input style="display:none;" id="videoFileDialog" type="file" />
+
+<!-- <input style="display:none;" id="srtFileDialog" type="file" /> -->
+
+
+<!--  <button  id="open" onclick="chooseFile('#videoFileDialog')" type="button" class="btn btn-md btn-success"><span class="glyphicon glyphicon-folder-open" aria-hidden="true" ></span>  <span class="glyphicon glyphicon-film" aria-hidden="true" > Open Video</span></button> 
+
+  <button  id="open" onclick="chooseFile('#srtFileDialog')" type="button" class="btn btn-md btn-success"><span class="glyphicon glyphicon-folder-open" aria-hidden="true" ></span>  <span class="glyphicon glyphicon-align-justify" aria-hidden="true" > Open srt</span></button>  -->
+
+
+
+<div class="row">
+<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+<h3><small>Transcriptions</small></h3>
+
+
+<div id="transcriptions">
+<!-- tabs left -->
+<div id="keywordsTranscripts">transcripts  tags</div>
+      <div class="tabbable tabs-left">
+       
+        <ul class="nav nav-tabs">
+
+          <li><a href="#1" data-toggle="tab">transcripName.mov.srt</a></li>
+   
+        </ul>
+
+         <div class="tab-content">
+<div class="tab-pane" id="1">
+  <div id="transcriptVideoPreviewContainer" class="embed-responsive embed-responsive-16by9">
+    <div  class="embed-responsive-item" id="transcriptVideoPreview"></div>
+</div>
+<br>
+<div id="keywords">transcript specific tags</div>
+<input type="text" id="search-criteria" class="form-control" placeholder="Search Transcriptions...">
+<hr>
+           <article id="transcription" class="sortable transcription">
+             <p>yo</p>
+                 <span class="word not-read child" tcIn="100" tcOut="200" line="2" transcriptionId="1" transcriptionSrc="/video.mov" >word</span>
+              
+          </div>
+
+        </article>
+      </div>
+      </div>
+
+  <!-- /tabs -->
+</div> <!-- transcriptions -->
+
+  </div><!-- end col  -->
+  <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 paperedit">
+<h3><small>Paper edit</small> </h3>
+<!-- Popcorn Sequence Preview -->
+<div id="videoPreviewContainer" class="embed-responsive embed-responsive-16by9">
+    <div  class="embed-responsive-item" id="videoPreview"></div>
+</div>
+<button id="playButton"  class="btn btn-primary btn-xs">play</button>
+
+<!-- end Popcorn Sequence Preview -->
+<a href="#"><span class='glyphicon glyphicon-film' aria-hidden='true'> EDL</span></a>
+<a href="#"><span class='glyphicon glyphicon-list-alt' aria-hidden='true'> CSV</span></a>
+<a href="#"><span class='glyphicon glyphicon-file' aria-hidden='true'> Text</span></a>
+
+  
+
+
+<br>
+<!-- <a href="#" onclick="clearPapercuts()" class="btn btn-danger btn-xs">Clear all</a>
+
+<a href="#" onclick="removeSelected()" class="btn btn-danger btn-xs">Remove selected</a>
+ -->
+<hr>
+
+<article id="paperedit" class="sortable">
+  
+      <span class="word not-read child" tcIn="400" tcOut="500" line="1" transcriptionId="3" transcriptionsrc="video.mov" >hello</span>
+
+</article>
+     </div><!-- end col  -->
+</div> <!-- end row -->
+
+
+    </div>
+    <script>
+var gui = require('nw.gui');
+
+// // Create a tray icon
+// var tray = new gui.Tray({ title: 'autoEdit'});
+
+// // Give it a menu
+// var trayMenu = new gui.Menu();
+// trayMenu.append(new gui.MenuItem({ 
+//   type: 'normal', 
+//   label: 'Import Video',
+//   click: function() {
+//     chooseFile('#videoFileDialog');
+//   }
+// }));
+
+// trayMenu.append(new gui.MenuItem({ 
+//   type: 'normal', 
+//   label: 'Import Srt',
+//   click: function() {
+//     chooseFile('#srtFileDialog');
+//   }
+// }));
+
+// tray.menu = trayMenu;
+
+
+//chose file
+function chooseFile(name) {
+    var chooser = document.querySelector(name);
+
+    chooser.addEventListener("change", function(evt) {
+      console.log(this.value);
+
+      openVideoFile(this.value);
+    }, false);
+
+    chooser.click();  
+}
+  // chooseFile('#fileDialog');
+
+
+function openVideoFile(srtFile){
+  alert(typeof srtFile);
+  // gui.Shell.openItem(srtFile);
+  // gui.Shell.showItemInFolder(srtFile);
+  //gui.Shell.openExternal('https://github.com/rogerwang/node-webkit');
+}
+
+
+    </script>
+      <script src="./js/main.js"></script>
+    </body>
+</html>
