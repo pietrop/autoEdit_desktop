@@ -173,6 +173,7 @@ var transcriptWindow = window.open('transcript.html');
 global.video = video;
 db.connect('db', ['videos']);
 db.videos.save(video);
+db.videos.findOne()
 //here is where you should save to db 
 }
 
